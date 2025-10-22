@@ -28,9 +28,17 @@ class WorldGen:
 
         # Set low_vram based on available VRAM if not specified
         if low_vram is None:
-            total_vram = torch.cuda.get_device_properties(0).total_memory / (1024**3)
-            low_vram = total_vram < 24
-            print(f"Detected {total_vram:.1f}GB VRAM, {'enabling' if low_vram else 'disabling'} low VRAM mode")
+            if torch.cuda.is_available():
+                total_vram = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+                low_vram = total_vram < 24
+                print(f"Detected {total_vram:.1f}GB VRAM, {'enabling' if low_vram else 'disabling'} low VRAM mode")
+            else:
+                # Non-CUDA devices (MPS, CPU) cannot use low_vram mode
+                low_vram = False
+                if torch.backends.mps.is_available():
+                    print("Running on Apple Silicon (MPS). Low VRAM mode is not available.")
+                else:
+                    print("Running on CPU. Low VRAM mode is not available.")
         self.low_vram = low_vram
 
         if mode == 't2s':

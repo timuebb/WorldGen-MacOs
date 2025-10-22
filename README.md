@@ -68,6 +68,8 @@ worldgen.generate_world("<TEXT PROMPT to describe the scene>")
 
 Getting started with WorldGen is simple!
 
+### Linux Installation
+
 ```bash
 # Clone the repository 
 git clone https://github.com/ZiYang-xie/WorldGen.git
@@ -80,9 +82,58 @@ conda activate worldgen
 # Install torch and torchvision (with GPU support)
 pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 
+# Install worldgen
+pip install .
+
+# Optional: Install nunchaku for low VRAM support (Linux only)
+# This enables generation with ~10GB VRAM instead of 24GB
+pip install ".[nunchaku-linux]"
+```
+
+### macOS Installation
+
+```bash
+# Clone the repository 
+git clone https://github.com/ZiYang-xie/WorldGen.git
+cd WorldGen
+
+# Create a new conda environment
+conda create -n worldgen python=3.11
+conda activate worldgen
+
+# Install torch and torchvision (with MPS support for Apple Silicon)
+pip3 install torch torchvision
 
 # Install worldgen
 pip install .
+```
+
+> [!Note]
+> **macOS Limitations:**
+> - The low VRAM feature (using Nunchaku) is not available on macOS as it requires platform-specific optimizations
+> - On macOS, you'll need a GPU with sufficient VRAM (24GB+ recommended) or be prepared for slower CPU-based generation
+> - Apple Silicon Macs (M1/M2/M3) can use MPS (Metal Performance Shaders) for GPU acceleration
+
+### Windows Installation
+
+```bash
+# Clone the repository 
+git clone https://github.com/ZiYang-xie/WorldGen.git
+cd WorldGen
+
+# Create a new conda environment
+conda create -n worldgen python=3.11
+conda activate worldgen
+
+# Install torch and torchvision (with GPU support)
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+
+# Install worldgen
+pip install .
+
+# Optional: Install nunchaku for low VRAM support (Windows only)
+# This enables generation with ~10GB VRAM instead of 24GB
+pip install ".[nunchaku-windows]"
 ```
 
 ## 🎮 Quick Start / Usage

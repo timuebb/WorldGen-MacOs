@@ -21,7 +21,7 @@ dependencies = [
     "torch>=2.7.0",
     "torchvision>=0.22.0",
     "diffusers>=0.33.1",
-    "xformers>=0.0.30",
+    "xformers>=0.0.30; sys_platform != 'darwin'",
     "transformers>=4.48.3",
     "py360convert>=0.1.0",
     "einops>=0.7.0",
@@ -31,10 +31,19 @@ dependencies = [
     "peft>=0.7.1",
     "open3d>=0.19.0",
     "trimesh>=4.6.1",
-    "nunchaku @ https://github.com/mit-han-lab/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.7-cp311-cp311-linux_x86_64.whl",
     "viser @ git+https://github.com/ZiYang-xie/viser.git", # Modified viser to show double-side texture mesh to better view the scene
     "UniK3D @ git+https://github.com/lpiccinelli-eth/UniK3D.git",
     # "pytorch3d @ git+https://github.com/facebookresearch/pytorch3d.git",
+]
+
+[project.optional-dependencies]
+# Nunchaku is only available for Linux and Windows, not macOS
+# On macOS, the low_vram feature will be disabled
+nunchaku-linux = [
+    "nunchaku @ https://github.com/nunchaku-tech/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.7-cp311-cp311-linux_x86_64.whl ; sys_platform == 'linux'",
+]
+nunchaku-windows = [
+    "nunchaku @ https://github.com/nunchaku-tech/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.7-cp311-cp311-win_amd64.whl ; sys_platform == 'win32'",
 ]
 
 [tool.setuptools.packages.find]

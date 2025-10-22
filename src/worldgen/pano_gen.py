@@ -1,14 +1,25 @@
 import os
+import sys
 import torch
 import tempfile
 from pathlib import Path
 from huggingface_hub import hf_hub_download
 from .models.flux_pano_gen_pipeline import FluxPipeline
 from .models.flux_pano_fill_pipeline import FluxFillPipeline
-from nunchaku import NunchakuFluxTransformer2dModel
-from nunchaku.utils import get_precision
-from nunchaku.lora.flux.compose import compose_lora
 from .utils.lora_utils import compose_lora_with_fixes, load_and_fix_lora
+
+# Try to import nunchaku (only available on Linux and Windows)
+try:
+    from nunchaku import NunchakuFluxTransformer2dModel
+    from nunchaku.utils import get_precision
+    from nunchaku.lora.flux.compose import compose_lora
+    NUNCHAKU_AVAILABLE = True
+except ImportError:
+    NUNCHAKU_AVAILABLE = False
+    if sys.platform == 'darwin':
+        print("⚠️  Nunchaku is not available on macOS. Low VRAM mode will be disabled.")
+    else:
+        print("⚠️  Nunchaku is not installed. Low VRAM mode will be disabled.")
 
 
 def build_pano_gen_model(lora_path=None, device="cuda", low_vram=True):
@@ -16,7 +27,7 @@ def build_pano_gen_model(lora_path=None, device="cuda", low_vram=True):
     if lora_path is None:
         lora_path = hf_hub_download(repo_id="LeoXie/WorldGen", filename=f"models--WorldGen-Flux-Lora/worldgen_text2scene.safetensors")
     
-    if low_vram:
+    if low_vram and NUNCHAKU_AVAILABLE:
         # Get precision and initialize Nunchaku transformer
         precision = get_precision()
         print(f"Using Nunchaku with {precision} precision")
@@ -36,6 +47,8 @@ def build_pano_gen_model(lora_path=None, device="cuda", low_vram=True):
         state_dict, _ = load_and_fix_lora(lora_path)
         transformer.update_lora_params(state_dict)
     else:
+        if low_vram and not NUNCHAKU_AVAILABLE:
+            print("⚠️  Low VRAM mode requested but Nunchaku is not available. Using standard mode.")
         # Standard pipeline initialization
         pipe = FluxPipeline.from_pretrained(
             "black-forest-labs/FLUX.1-dev",
@@ -55,7 +68,7 @@ def build_pano_fill_model(lora_path=None, device="cuda", low_vram=True):
     if lora_path is None:
         lora_path = hf_hub_download(repo_id="LeoXie/WorldGen", filename=f"models--WorldGen-Flux-Lora/worldgen_img2scene.safetensors")
     
-    if low_vram:
+    if low_vram and NUNCHAKU_AVAILABLE:
         # Get precision and initialize Nunchaku transformer
         precision = get_precision()
         print(f"Using Nunchaku with {precision} precision")
@@ -75,6 +88,8 @@ def build_pano_fill_model(lora_path=None, device="cuda", low_vram=True):
         state_dict, _ = load_and_fix_lora(lora_path)
         transformer.update_lora_params(state_dict)
     else:
+        if low_vram and not NUNCHAKU_AVAILABLE:
+            print("⚠️  Low VRAM mode requested but Nunchaku is not available. Using standard mode.")
         # Standard pipeline initialization
         pipe = FluxFillPipeline.from_pretrained(
             "black-forest-labs/FLUX.1-Fill-dev",

@@ -45,7 +45,15 @@ class ViserServer:
         self.server = viser.ViserServer()
         self.server.scene.set_up_direction("-y")
         self.server.scene.enable_default_lights(False)
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        
+        # Set device based on availability: CUDA > MPS > CPU
+        if torch.cuda.is_available():
+            self.device = torch.device("cuda")
+        elif torch.backends.mps.is_available():
+            self.device = torch.device("mps")
+        else:
+            self.device = torch.device("cpu")
+        
         self.return_mesh = False
 
         if args.return_mesh:
@@ -352,9 +360,17 @@ if __name__ == "__main__":
     parser.add_argument("--low_vram", action="store_true", help="Whether to use low VRAM")
     args = parser.parse_args()
 
-    if torch.cuda.get_device_properties(0).total_memory / (1024 ** 3) < 24:
-        print("Detected GPU VRAM less than 24GB, setting low_vram to True")
-        args.low_vram = True
+    # Check if CUDA is available and set low_vram if needed
+    if torch.cuda.is_available():
+        if torch.cuda.get_device_properties(0).total_memory / (1024 ** 3) < 24:
+            print("Detected GPU VRAM less than 24GB, setting low_vram to True")
+            args.low_vram = True
+    elif torch.backends.mps.is_available():
+        print("Running on Apple Silicon (MPS). Low VRAM mode is not available on macOS.")
+        args.low_vram = False
+    else:
+        print("No GPU detected. Running on CPU (this will be slow).")
+        args.low_vram = False
 
     server = ViserServer(args)
     server.run()
