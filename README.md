@@ -82,12 +82,8 @@ conda activate worldgen
 # Install torch and torchvision (with GPU support)
 pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 
-# Install worldgen
+# Install worldgen (nunchaku for low VRAM support is automatically installed)
 pip install .
-
-# Optional: Install nunchaku for low VRAM support (Linux only)
-# This enables generation with ~10GB VRAM instead of 24GB
-pip install ".[nunchaku-linux]"
 ```
 
 ### macOS Installation
@@ -130,12 +126,8 @@ conda activate worldgen
 # Install torch and torchvision (with GPU support)
 pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 
-# Install worldgen
+# Install worldgen (nunchaku for low VRAM support is automatically installed)
 pip install .
-
-# Optional: Install nunchaku for low VRAM support (Windows only)
-# This enables generation with ~10GB VRAM instead of 24GB
-pip install ".[nunchaku-windows]"
 ```
 
 ## 🎮 Quick Start / Usage

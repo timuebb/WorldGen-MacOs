@@ -19,10 +19,10 @@ The repository had several blockers preventing macOS installation:
 ## Changes Made
 
 ### 1. pyproject.toml
-- Moved `nunchaku` from main dependencies to optional platform-specific dependencies
-- Added `nunchaku-linux` and `nunchaku-windows` optional dependency groups
+- Added platform-specific markers for `nunchaku` dependency (required on Linux/Windows, excluded on macOS)
 - Fixed the nunchaku repository URL (was `mit-han-lab`, now correctly `nunchaku-tech`)
 - Made `xformers` platform-conditional (excluded on macOS)
+- Nunchaku is now automatically installed on Linux and Windows without needing extra steps
 
 ### 2. Source Code Updates
 
