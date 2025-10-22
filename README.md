@@ -88,7 +88,21 @@ pip install .
 
 ### macOS Installation
 
+> [!WARNING]
+> **macOS is currently NOT supported** due to a critical dependency limitation:
+> - UniK3D (required for depth estimation) depends on Triton
+> - Triton is NVIDIA-specific and only available on Linux/Windows
+> - Without UniK3D, WorldGen cannot function
+> 
+> **Alternatives for macOS users:**
+> - Use Linux/Windows with NVIDIA GPU
+> - Use cloud-based GPU services (Google Colab, AWS, etc.)
+> - Wait for alternative depth estimation models with macOS support
+
 ```bash
+# Installation will succeed but the program CANNOT run on macOS
+# This is documented here for future reference when macOS support becomes available
+
 # Clone the repository 
 git clone https://github.com/ZiYang-xie/WorldGen.git
 cd WorldGen
@@ -97,21 +111,12 @@ cd WorldGen
 conda create -n worldgen python=3.11
 conda activate worldgen
 
-# Install torch and torchvision (with MPS support for Apple Silicon)
-# Important: Use 'pip' (not 'pip3') to install in the conda environment
+# Install torch and torchvision
 pip install torch torchvision
 
-# Install worldgen
+# Install worldgen (will install but won't work due to UniK3D/Triton limitation)
 pip install .
 ```
-
-> [!Note]
-> **macOS Limitations:**
-> - The low VRAM feature (using Nunchaku) is not available on macOS as it requires platform-specific optimizations
-> - On macOS, you'll need a GPU with sufficient VRAM (24GB+ recommended) or be prepared for slower CPU-based generation
-> - Apple Silicon Macs (M1/M2/M3) can use MPS (Metal Performance Shaders) for GPU acceleration
-> 
-> **For detailed macOS installation instructions, troubleshooting, and optimization tips, see [MACOS_INSTALLATION.md](MACOS_INSTALLATION.md)**
 
 ### Windows Installation
 

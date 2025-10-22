@@ -7,6 +7,21 @@ The original issue requested checking if installation on macOS is possible and w
 
 **Translation**: "Check if installation on macOS is possible or what needs to be changed to enable it on macOS"
 
+## Conclusion
+
+**Answer: NO - macOS is currently NOT supported** ❌
+
+### Critical Blocker
+
+**UniK3D dependency requires Triton:**
+- UniK3D (depth estimation library) is a **core** dependency
+- UniK3D requires Triton (NVIDIA GPU programming language)
+- Triton is **only available on Linux/Windows** with NVIDIA GPUs
+- Triton cannot be installed on macOS (no NVIDIA GPU support)
+- Without UniK3D, WorldGen **cannot function**
+
+This is a fundamental limitation that cannot be worked around without replacing the depth estimation model.
+
 ## Analysis
 
 The repository had several blockers preventing macOS installation:

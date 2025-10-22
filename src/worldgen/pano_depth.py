@@ -1,10 +1,28 @@
+import sys
 import torch
 import numpy as np
 from PIL import Image
-from unik3d.models import UniK3D
-from unik3d.utils.camera import Spherical
+
+# Try to import UniK3D (only available on Linux and Windows due to Triton dependency)
+try:
+    from unik3d.models import UniK3D
+    from unik3d.utils.camera import Spherical
+    UNIK3D_AVAILABLE = True
+except ImportError:
+    UNIK3D_AVAILABLE = False
+    if sys.platform == 'darwin':
+        print("⚠️  UniK3D is not available on macOS (requires Triton which is Linux/Windows only).")
+        print("⚠️  Depth estimation features will not work. This is a known limitation.")
+    else:
+        print("⚠️  UniK3D is not installed. Depth estimation features will not work.")
 
 def build_depth_model(device: torch.device = 'cuda'):
+    if not UNIK3D_AVAILABLE:
+        raise ImportError(
+            "UniK3D is not available on this platform. "
+            "Depth estimation requires Linux or Windows due to Triton dependency. "
+            "macOS is not currently supported for this feature."
+        )
     model = UniK3D.from_pretrained("lpiccinelli/unik3d-vitl")
     model.eval()
     model = model.to(device)

@@ -1,8 +1,30 @@
 # macOS Installation Guide for WorldGen
 
-This guide provides detailed instructions for installing and running WorldGen on macOS systems.
+> [!WARNING]
+> ## ⚠️ CRITICAL LIMITATION: macOS is Currently NOT Supported ⚠️
+> 
+> **WorldGen cannot currently run on macOS** due to a fundamental dependency limitation:
+> 
+> - **UniK3D** (required for depth estimation) depends on **Triton**
+> - **Triton** is an NVIDIA GPU programming language that **only works on Linux/Windows**
+> - Without UniK3D, WorldGen **cannot perform depth estimation**, which is essential for 3D scene generation
+> 
+> **This affects ALL macOS systems** (both Intel and Apple Silicon).
+>
+> ### Alternatives for macOS Users:
+> 
+> 1. **Use Linux/Windows** with an NVIDIA GPU (recommended)
+> 2. **Cloud-based GPU services:**
+>    - Google Colab (free tier available)
+>    - AWS EC2 with GPU instances
+>    - Paperspace, Lambda Labs, etc.
+> 3. **Wait for alternative depth models** that support macOS (future work)
+>
+> This guide is kept for reference and for when macOS support becomes available in the future.
 
-## Prerequisites
+---
+
+## Prerequisites (When macOS Support Becomes Available)
 
 - macOS 10.15 (Catalina) or later
 - Python 3.11 or later

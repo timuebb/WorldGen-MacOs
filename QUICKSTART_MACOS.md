@@ -1,8 +1,23 @@
 # Quick Start for macOS Users
 
-## TL;DR - Fast Installation
+> [!WARNING]
+> ## ⚠️ macOS is Currently NOT Supported
+> 
+> WorldGen **cannot run on macOS** due to the UniK3D dependency requiring Triton (Linux/Windows only).
+> 
+> **Alternatives:**
+> - Use Linux/Windows with NVIDIA GPU
+> - Use Google Colab or other cloud GPU services
+> 
+> This guide is kept for future reference.
+
+---
+
+## Installation (Non-Functional on macOS)
 
 ```bash
+# This installation will complete but the program CANNOT run
+
 # 1. Install prerequisites
 # Make sure you have Conda installed from https://docs.conda.io/en/latest/miniconda.html
 
@@ -14,12 +29,9 @@ conda activate worldgen
 pip install torch torchvision
 pip install .
 
-# 3. Test it works
+# 3. Test - This will FAIL with UniK3D import error
 python -c "from worldgen import WorldGen; print('✅ Installation successful!')"
-
-# 4. Generate your first scene (takes 10-20 minutes on Apple Silicon)
-python demo.py -p "A beautiful mountain landscape"
-# Open http://localhost:8080 in your browser to view the scene
+# Expected error: "UniK3D is not available on this platform"
 ```
 
 ## Important Notes for macOS Users
