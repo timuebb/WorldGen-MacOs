@@ -113,6 +113,8 @@ pip install .
 > - The low VRAM feature (using Nunchaku) is not available on macOS as it requires platform-specific optimizations
 > - On macOS, you'll need a GPU with sufficient VRAM (24GB+ recommended) or be prepared for slower CPU-based generation
 > - Apple Silicon Macs (M1/M2/M3) can use MPS (Metal Performance Shaders) for GPU acceleration
+> 
+> **For detailed macOS installation instructions, troubleshooting, and optimization tips, see [MACOS_INSTALLATION.md](MACOS_INSTALLATION.md)**
 
 ### Windows Installation
 
