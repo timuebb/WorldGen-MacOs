@@ -80,7 +80,7 @@ conda create -n worldgen python=3.11
 conda activate worldgen
 
 # Install torch and torchvision (with GPU support)
-pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 
 # Install worldgen (nunchaku for low VRAM support is automatically installed)
 pip install .
@@ -98,7 +98,8 @@ conda create -n worldgen python=3.11
 conda activate worldgen
 
 # Install torch and torchvision (with MPS support for Apple Silicon)
-pip3 install torch torchvision
+# Important: Use 'pip' (not 'pip3') to install in the conda environment
+pip install torch torchvision
 
 # Install worldgen
 pip install .
@@ -124,7 +125,7 @@ conda create -n worldgen python=3.11
 conda activate worldgen
 
 # Install torch and torchvision (with GPU support)
-pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 
 # Install worldgen (nunchaku for low VRAM support is automatically installed)
 pip install .

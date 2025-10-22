@@ -32,12 +32,16 @@ conda activate worldgen
 For macOS, install PyTorch without CUDA support:
 
 ```bash
-pip3 install torch torchvision
+# Important: Use 'pip' (not 'pip3') when inside a conda environment
+pip install torch torchvision
 ```
 
 This will automatically install the appropriate version for your system:
 - **Apple Silicon (M1/M2/M3/M4)**: Includes MPS (Metal Performance Shaders) support for GPU acceleration
 - **Intel-based Macs**: CPU-only version
+
+> [!IMPORTANT]
+> **Always use `pip` (not `pip3`) when inside a conda environment.** Using `pip3` may reference your system Python instead of the conda environment, causing installation errors on macOS.
 
 ### 4. Install WorldGen
 

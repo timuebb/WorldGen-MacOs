@@ -11,7 +11,7 @@ git clone https://github.com/ZiYang-xie/WorldGen.git
 cd WorldGen
 conda create -n worldgen python=3.11 -y
 conda activate worldgen
-pip3 install torch torchvision
+pip install torch torchvision
 pip install .
 
 # 3. Test it works
