@@ -1,9 +1,16 @@
 import os
+import sys
 import torch
 import safetensors.torch
-from nunchaku.lora.flux.compose import compose_lora
 import re
 from typing import Dict, Tuple, List
+
+# Try to import nunchaku (only available on Linux and Windows)
+try:
+    from nunchaku.lora.flux.compose import compose_lora
+    NUNCHAKU_AVAILABLE = True
+except ImportError:
+    NUNCHAKU_AVAILABLE = False
 
 def get_block_number(key):
     """Extract block number from key if present."""
@@ -90,6 +97,10 @@ def load_and_fix_lora(lora_path: str) -> Tuple[Dict[str, torch.Tensor], float]:
 
 def compose_lora_with_fixes(lora_paths: List[Tuple[str, float]]) -> Dict[str, torch.Tensor]:
     """Compose multiple LoRAs after fixing any missing keys."""
+    if not NUNCHAKU_AVAILABLE:
+        raise ImportError("Nunchaku is required for compose_lora_with_fixes but is not available. "
+                         "This functionality is not supported on macOS.")
+    
     # Load and fix each LoRA
     fixed_loras = [load_and_fix_lora(path) for path, weight in lora_paths]
     

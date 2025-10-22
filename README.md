@@ -68,6 +68,8 @@ worldgen.generate_world("<TEXT PROMPT to describe the scene>")
 
 Getting started with WorldGen is simple!
 
+### Linux Installation
+
 ```bash
 # Clone the repository 
 git clone https://github.com/ZiYang-xie/WorldGen.git
@@ -78,10 +80,59 @@ conda create -n worldgen python=3.11
 conda activate worldgen
 
 # Install torch and torchvision (with GPU support)
-pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 
+# Install worldgen (nunchaku for low VRAM support is automatically installed)
+pip install .
+```
 
-# Install worldgen
+### macOS Installation
+
+> [!WARNING]
+> **macOS is currently NOT supported** due to a critical dependency limitation:
+> - UniK3D (required for depth estimation) depends on Triton
+> - Triton is NVIDIA-specific and only available on Linux/Windows
+> - Without UniK3D, WorldGen cannot function
+> 
+> **Alternatives for macOS users:**
+> - Use Linux/Windows with NVIDIA GPU
+> - Use cloud-based GPU services (Google Colab, AWS, etc.)
+> - Wait for alternative depth estimation models with macOS support
+
+```bash
+# Installation will succeed but the program CANNOT run on macOS
+# This is documented here for future reference when macOS support becomes available
+
+# Clone the repository 
+git clone https://github.com/ZiYang-xie/WorldGen.git
+cd WorldGen
+
+# Create a new conda environment
+conda create -n worldgen python=3.11
+conda activate worldgen
+
+# Install torch and torchvision
+pip install torch torchvision
+
+# Install worldgen (will install but won't work due to UniK3D/Triton limitation)
+pip install .
+```
+
+### Windows Installation
+
+```bash
+# Clone the repository 
+git clone https://github.com/ZiYang-xie/WorldGen.git
+cd WorldGen
+
+# Create a new conda environment
+conda create -n worldgen python=3.11
+conda activate worldgen
+
+# Install torch and torchvision (with GPU support)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+
+# Install worldgen (nunchaku for low VRAM support is automatically installed)
 pip install .
 ```
 
