@@ -257,6 +257,25 @@ ERROR: nunchaku-0.2.0+torch2.7-cp311-cp311-linux_x86_64.whl is not a supported w
 
 Dieser Workaround stellt sicher, dass die richtige Version von nunchaku für Python 3.12 verwendet wird, ohne dass Änderungen am Repository-Code erforderlich sind.
 
+### Dependency Conflicts Warnung (kann ignoriert werden)
+
+**Warnung während der Installation**:
+```
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+worldgen 0.1.0 requires UniK3D@ git+https://github.com/lpiccinelli-eth/UniK3D.git, which is not installed.
+```
+
+**Erklärung**: Diese Warnung erscheint, weil wir die Abhängigkeiten in mehreren Schritten installieren (zuerst `viser`, dann `UniK3D`). Pip zeigt diese Warnung an, bevor `UniK3D` installiert wird.
+
+**Lösung**: Diese Warnung kann **ignoriert** werden. Solange die Installation mit `!pip install git+https://github.com/lpiccinelli-eth/UniK3D.git` erfolgreich fortgesetzt wird, ist alles in Ordnung. Die Warnung verschwindet, sobald alle Abhängigkeiten installiert sind.
+
+**Überprüfung**: Nach der vollständigen Installation kannst du prüfen, ob alle Pakete korrekt installiert wurden:
+```python
+import worldgen
+import UniK3D
+print("✅ Alle Pakete erfolgreich installiert!")
+```
+
 ### Speicherplatz prüfen
 ```python
 !df -h
