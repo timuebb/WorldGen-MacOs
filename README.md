@@ -85,6 +85,10 @@ pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu12
 pip install .
 ```
 
+### 🌐 Google Colab Support
+
+Want to try WorldGen without local installation? Check out our [Google Colab Guide](GOOGLE_COLAB_GUIDE.md) for step-by-step instructions on running WorldGen in Google Colab with free GPU access!
+
 ## 🎮 Quick Start / Usage
 
 ### WorldGen API
