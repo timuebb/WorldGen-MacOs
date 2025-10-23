@@ -276,6 +276,56 @@ import UniK3D
 print("✅ Alle Pakete erfolgreich installiert!")
 ```
 
+### KNN Kompilierungs-Warnung (kann ignoriert werden)
+
+**Warnung beim ersten Ausführen**:
+```
+/usr/local/lib/python3.12/dist-packages/unik3d/utils/chamfer_distance.py:9: UserWarning: !! To run evaluation you need KNN. Please compile KNN: `cd unik3d/ops/knn && bash compile.sh`.
+```
+
+**Erklärung**: Diese Warnung erscheint beim ersten Import von WorldGen. KNN (K-Nearest Neighbors) wird nur für Evaluierungszwecke benötigt, nicht für die Szenen-Generierung.
+
+**Lösung**: Diese Warnung kann **ignoriert** werden. WorldGen funktioniert vollständig ohne KNN-Kompilierung. Die Generierung von 3D-Szenen ist nicht betroffen.
+
+Falls du KNN benötigst (nur für fortgeschrittene Evaluation), kannst du es in Colab kompilieren:
+```python
+# Optional: Nur wenn KNN wirklich benötigt wird
+!cd /usr/local/lib/python3.12/dist-packages/unik3d/ops/knn && bash compile.sh
+```
+
+**Hinweis**: Für normale Nutzung ist dies nicht erforderlich.
+
+### ModuleNotFoundError beheben
+
+**Problem**: Beim Ausführen von `worldgen.generate_world()` erhältst du einen `ModuleNotFoundError`.
+
+**Mögliche Ursachen und Lösungen**:
+
+1. **Neustart der Runtime erforderlich**: Nach der Installation aller Pakete musst du möglicherweise die Colab Runtime neu starten:
+   - Gehe zu `Runtime` → `Restart runtime`
+   - Führe dann nur den Code-Block mit der WorldGen-Nutzung aus (ohne die Installationsbefehle)
+
+2. **Fehlende Abhängigkeit**: Stelle sicher, dass alle Installationsschritte erfolgreich abgeschlossen wurden:
+```python
+# Überprüfe, ob alle wichtigen Module importiert werden können
+try:
+    import torch
+    import diffusers
+    import transformers
+    import UniK3D
+    import worldgen
+    print("✅ Alle Module erfolgreich importiert!")
+except ImportError as e:
+    print(f"❌ Fehlendes Modul: {e}")
+```
+
+3. **Installation wiederholen**: Falls Module fehlen, führe die Installation erneut aus:
+```python
+!pip install diffusers>=0.33.1 xformers>=0.0.30 transformers>=4.48.3 py360convert>=0.1.0 einops>=0.7.0 pillow>=8.0.0 scikit-image>=0.24.0 sentencepiece>=0.2.0 peft>=0.7.1 open3d>=0.19.0 trimesh>=4.6.1
+!pip install git+https://github.com/ZiYang-xie/viser.git
+!pip install git+https://github.com/lpiccinelli-eth/UniK3D.git
+```
+
 ### Speicherplatz prüfen
 ```python
 !df -h
