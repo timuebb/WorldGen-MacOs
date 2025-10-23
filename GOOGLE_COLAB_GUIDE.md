@@ -28,7 +28,7 @@ Erstelle ein neues Google Colab Notebook und wähle eine GPU-Runtime:
 
 ## Schritt 3: Abhängigkeiten installieren
 
-⚠️ **Wichtig für Python 3.12 (Google Colab)**: Da Google Colab Python 3.12 verwendet und das WorldGen-Repository eine Python 3.11-Version von nunchaku spezifiziert, musst du nunchaku manuell installieren, bevor du WorldGen installierst.
+⚠️ **Wichtig für Python 3.12 (Google Colab)**: Da Google Colab Python 3.12 verwendet und das WorldGen-Repository eine Python 3.11-Version von nunchaku spezifiziert, musst du nunchaku **und pytorch3d** manuell installieren, bevor du WorldGen installierst.
 
 ```python
 # PyTorch mit CUDA-Unterstützung installieren
@@ -38,6 +38,9 @@ Erstelle ein neues Google Colab Notebook und wähle eine GPU-Runtime:
 # WICHTIG: Nunchaku manuell für Python 3.12 installieren
 # Dies muss VOR der WorldGen-Installation erfolgen
 !pip install https://github.com/mit-han-lab/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.8-cp312-cp312-linux_x86_64.whl
+
+# PyTorch3D installieren (erforderlich für WorldGen)
+!pip install "git+https://github.com/facebookresearch/pytorch3d.git"
 
 # WorldGen installieren (ohne nunchaku-Abhängigkeit)
 !pip install --no-deps .
@@ -185,6 +188,9 @@ Hier ist ein vollständiges Beispiel, das alle Schritte kombiniert:
 # WICHTIG: Nunchaku manuell für Python 3.12 installieren
 !pip install https://github.com/mit-han-lab/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.8-cp312-cp312-linux_x86_64.whl
 
+# PyTorch3D installieren (erforderlich für WorldGen)
+!pip install "git+https://github.com/facebookresearch/pytorch3d.git"
+
 # WorldGen und restliche Abhängigkeiten installieren
 !pip install --no-deps .
 !pip install diffusers>=0.33.1 xformers>=0.0.30 transformers>=4.48.3 py360convert>=0.1.0 einops>=0.7.0 pillow>=8.0.0 scikit-image>=0.24.0 sentencepiece>=0.2.0 peft>=0.7.1 open3d>=0.19.0 trimesh>=4.6.1
@@ -301,15 +307,25 @@ Falls du KNN benötigst (nur für fortgeschrittene Evaluation), kannst du es in 
 
 **Mögliche Ursachen und Lösungen**:
 
-1. **Neustart der Runtime erforderlich**: Nach der Installation aller Pakete musst du möglicherweise die Colab Runtime neu starten:
+1. **PyTorch3D fehlt** (`No module named 'pytorch3d'`):
+   - PyTorch3D ist eine erforderliche Abhängigkeit, die manuell installiert werden muss
+   - **Lösung**: Installiere pytorch3d:
+```python
+!pip install "git+https://github.com/facebookresearch/pytorch3d.git"
+```
+   - Danach Runtime neu starten: `Runtime` → `Restart runtime`
+   - Dann nur den WorldGen-Code ausführen (ohne Installationsbefehle)
+
+2. **Neustart der Runtime erforderlich**: Nach der Installation aller Pakete musst du möglicherweise die Colab Runtime neu starten:
    - Gehe zu `Runtime` → `Restart runtime`
    - Führe dann nur den Code-Block mit der WorldGen-Nutzung aus (ohne die Installationsbefehle)
 
-2. **Fehlende Abhängigkeit**: Stelle sicher, dass alle Installationsschritte erfolgreich abgeschlossen wurden:
+3. **Fehlende Abhängigkeit**: Stelle sicher, dass alle Installationsschritte erfolgreich abgeschlossen wurden:
 ```python
 # Überprüfe, ob alle wichtigen Module importiert werden können
 try:
     import torch
+    import pytorch3d
     import diffusers
     import transformers
     import UniK3D
@@ -319,8 +335,9 @@ except ImportError as e:
     print(f"❌ Fehlendes Modul: {e}")
 ```
 
-3. **Installation wiederholen**: Falls Module fehlen, führe die Installation erneut aus:
+4. **Installation wiederholen**: Falls Module fehlen, führe die Installation erneut aus:
 ```python
+!pip install "git+https://github.com/facebookresearch/pytorch3d.git"
 !pip install diffusers>=0.33.1 xformers>=0.0.30 transformers>=4.48.3 py360convert>=0.1.0 einops>=0.7.0 pillow>=8.0.0 scikit-image>=0.24.0 sentencepiece>=0.2.0 peft>=0.7.1 open3d>=0.19.0 trimesh>=4.6.1
 !pip install git+https://github.com/ZiYang-xie/viser.git
 !pip install git+https://github.com/lpiccinelli-eth/UniK3D.git
