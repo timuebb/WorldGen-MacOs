@@ -33,8 +33,15 @@ Erstelle ein neues Google Colab Notebook und wähle eine GPU-Runtime:
 # Für Google Colab mit CUDA 12.x
 !pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
 
-# WorldGen installieren
-!pip install .
+# Nunchaku manuell installieren (für Python 3.12 Kompatibilität)
+# Google Colab verwendet Python 3.12, daher brauchen wir die cp312 Version
+!pip install https://github.com/mit-han-lab/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.8-cp312-cp312-linux_x86_64.whl
+
+# WorldGen installieren (ohne nunchaku, da bereits installiert)
+!pip install --no-deps .
+!pip install diffusers>=0.33.1 xformers>=0.0.30 transformers>=4.48.3 py360convert>=0.1.0 einops>=0.7.0 pillow>=8.0.0 scikit-image>=0.24.0 sentencepiece>=0.2.0 peft>=0.7.1 open3d>=0.19.0 trimesh>=4.6.1
+!pip install git+https://github.com/ZiYang-xie/viser.git
+!pip install git+https://github.com/lpiccinelli-eth/UniK3D.git
 
 # Optional: Für Background-Inpainting (experimentell)
 # !pip install iopaint --no-dependencies
@@ -170,7 +177,15 @@ Hier ist ein vollständiges Beispiel, das alle Schritte kombiniert:
 
 # 2. Abhängigkeiten installieren
 !pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
-!pip install .
+
+# Nunchaku manuell installieren (für Python 3.12 Kompatibilität)
+!pip install https://github.com/mit-han-lab/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.8-cp312-cp312-linux_x86_64.whl
+
+# WorldGen installieren
+!pip install --no-deps .
+!pip install diffusers>=0.33.1 xformers>=0.0.30 transformers>=4.48.3 py360convert>=0.1.0 einops>=0.7.0 pillow>=8.0.0 scikit-image>=0.24.0 sentencepiece>=0.2.0 peft>=0.7.1 open3d>=0.19.0 trimesh>=4.6.1
+!pip install git+https://github.com/ZiYang-xie/viser.git
+!pip install git+https://github.com/lpiccinelli-eth/UniK3D.git
 
 # 3. WorldGen verwenden
 import torch
@@ -210,6 +225,23 @@ files.download('beach_scene.ply')
 Wenn du Out-of-Memory Fehler erhältst, verwende:
 ```python
 worldgen = WorldGen(mode="t2s", device=device, low_vram=True)
+```
+
+### Python 3.12 Kompatibilitätsproblem (nunchaku)
+Wenn du den Fehler `nunchaku-0.2.0+torch2.7-cp311-cp311-linux_x86_64.whl is not a supported wheel on this platform` erhältst, liegt das daran, dass Google Colab Python 3.12 verwendet, aber die Standard-Installation eine Python 3.11 Version von nunchaku versucht zu installieren.
+
+**Lösung**: Installiere nunchaku manuell mit der korrekten Python 3.12 Version:
+```python
+# Nunchaku für Python 3.12 installieren
+!pip install https://github.com/mit-han-lab/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.8-cp312-cp312-linux_x86_64.whl
+
+# Dann WorldGen ohne Abhängigkeiten installieren
+!pip install --no-deps .
+
+# Restliche Abhängigkeiten installieren
+!pip install diffusers>=0.33.1 xformers>=0.0.30 transformers>=4.48.3 py360convert>=0.1.0 einops>=0.7.0 pillow>=8.0.0 scikit-image>=0.24.0 sentencepiece>=0.2.0 peft>=0.7.1 open3d>=0.19.0 trimesh>=4.6.1
+!pip install git+https://github.com/ZiYang-xie/viser.git
+!pip install git+https://github.com/lpiccinelli-eth/UniK3D.git
 ```
 
 ### Speicherplatz prüfen
