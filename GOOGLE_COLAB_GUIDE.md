@@ -28,17 +28,21 @@ Erstelle ein neues Google Colab Notebook und wähle eine GPU-Runtime:
 
 ## Schritt 3: Abhängigkeiten installieren
 
+⚠️ **Wichtig für Python 3.12 (Google Colab)**: Da Google Colab Python 3.12 verwendet und das WorldGen-Repository eine Python 3.11-Version von nunchaku spezifiziert, musst du nunchaku manuell installieren, bevor du WorldGen installierst.
+
 ```python
 # PyTorch mit CUDA-Unterstützung installieren
 # Für Google Colab mit CUDA 12.x
 !pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
 
-# Nunchaku manuell installieren (für Python 3.12 Kompatibilität)
-# Google Colab verwendet Python 3.12, daher brauchen wir die cp312 Version
+# WICHTIG: Nunchaku manuell für Python 3.12 installieren
+# Dies muss VOR der WorldGen-Installation erfolgen
 !pip install https://github.com/mit-han-lab/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.8-cp312-cp312-linux_x86_64.whl
 
-# WorldGen installieren (ohne nunchaku, da bereits installiert)
+# WorldGen installieren (ohne nunchaku-Abhängigkeit)
 !pip install --no-deps .
+
+# Alle anderen Abhängigkeiten installieren
 !pip install diffusers>=0.33.1 xformers>=0.0.30 transformers>=4.48.3 py360convert>=0.1.0 einops>=0.7.0 pillow>=8.0.0 scikit-image>=0.24.0 sentencepiece>=0.2.0 peft>=0.7.1 open3d>=0.19.0 trimesh>=4.6.1
 !pip install git+https://github.com/ZiYang-xie/viser.git
 !pip install git+https://github.com/lpiccinelli-eth/UniK3D.git
@@ -178,10 +182,10 @@ Hier ist ein vollständiges Beispiel, das alle Schritte kombiniert:
 # 2. Abhängigkeiten installieren
 !pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
 
-# Nunchaku manuell installieren (für Python 3.12 Kompatibilität)
+# WICHTIG: Nunchaku manuell für Python 3.12 installieren
 !pip install https://github.com/mit-han-lab/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.8-cp312-cp312-linux_x86_64.whl
 
-# WorldGen installieren
+# WorldGen und restliche Abhängigkeiten installieren
 !pip install --no-deps .
 !pip install diffusers>=0.33.1 xformers>=0.0.30 transformers>=4.48.3 py360convert>=0.1.0 einops>=0.7.0 pillow>=8.0.0 scikit-image>=0.24.0 sentencepiece>=0.2.0 peft>=0.7.1 open3d>=0.19.0 trimesh>=4.6.1
 !pip install git+https://github.com/ZiYang-xie/viser.git
@@ -227,22 +231,31 @@ Wenn du Out-of-Memory Fehler erhältst, verwende:
 worldgen = WorldGen(mode="t2s", device=device, low_vram=True)
 ```
 
-### Python 3.12 Kompatibilitätsproblem (nunchaku)
-Wenn du den Fehler `nunchaku-0.2.0+torch2.7-cp311-cp311-linux_x86_64.whl is not a supported wheel on this platform` erhältst, liegt das daran, dass Google Colab Python 3.12 verwendet, aber die Standard-Installation eine Python 3.11 Version von nunchaku versucht zu installieren.
+### Python 3.12 Kompatibilitätsproblem beheben
 
-**Lösung**: Installiere nunchaku manuell mit der korrekten Python 3.12 Version:
+**Problem**: Beim Ausführen von `!pip install .` in Google Colab erhältst du den Fehler:
+```
+ERROR: nunchaku-0.2.0+torch2.7-cp311-cp311-linux_x86_64.whl is not a supported wheel on this platform.
+```
+
+**Ursache**: Das WorldGen-Repository enthält eine Abhängigkeit zu nunchaku für Python 3.11, aber Google Colab verwendet Python 3.12.
+
+**Lösung in Colab**: Installiere nunchaku manuell vor der WorldGen-Installation:
+
 ```python
-# Nunchaku für Python 3.12 installieren
+# Schritt 1: Nunchaku für Python 3.12 installieren
 !pip install https://github.com/mit-han-lab/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.8-cp312-cp312-linux_x86_64.whl
 
-# Dann WorldGen ohne Abhängigkeiten installieren
+# Schritt 2: WorldGen ohne Abhängigkeiten installieren
 !pip install --no-deps .
 
-# Restliche Abhängigkeiten installieren
+# Schritt 3: Restliche Abhängigkeiten installieren
 !pip install diffusers>=0.33.1 xformers>=0.0.30 transformers>=4.48.3 py360convert>=0.1.0 einops>=0.7.0 pillow>=8.0.0 scikit-image>=0.24.0 sentencepiece>=0.2.0 peft>=0.7.1 open3d>=0.19.0 trimesh>=4.6.1
 !pip install git+https://github.com/ZiYang-xie/viser.git
 !pip install git+https://github.com/lpiccinelli-eth/UniK3D.git
 ```
+
+Dieser Workaround stellt sicher, dass die richtige Version von nunchaku für Python 3.12 verwendet wird, ohne dass Änderungen am Repository-Code erforderlich sind.
 
 ### Speicherplatz prüfen
 ```python
