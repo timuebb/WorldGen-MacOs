@@ -8,6 +8,7 @@ WorldGen benötigt:
 - Python 3.11 oder höher (Google Colab verwendet Python 3.12)
 - CUDA-fähige GPU (empfohlen: mindestens 12GB VRAM, funktioniert auch mit weniger im Low-VRAM-Modus)
 - Ubuntu/Linux-Umgebung (Google Colab verwendet Ubuntu 22.04)
+- **Hugging Face Account**: Für den Zugriff auf das FLUX.1-dev Modell benötigst du einen kostenlosen Hugging Face Account und musst die Modell-Nutzungsbedingungen akzeptieren
 
 ⚠️ **Hinweis**: Google Colab bietet kostenlose GPU-Zugriff, aber die verfügbare VRAM kann variieren. Verwende den `low_vram=True` Modus, wenn du Speicherprobleme hast.
 
@@ -342,6 +343,60 @@ except ImportError as e:
 !pip install git+https://github.com/ZiYang-xie/viser.git
 !pip install git+https://github.com/lpiccinelli-eth/UniK3D.git
 ```
+
+### Hugging Face Authentication Error (GatedRepoError)
+
+**Problem**: Beim Generieren einer Szene erhältst du einen `GatedRepoError: 401 Client Error: Unauthorized`:
+```
+HTTPError: 401 Client Error: Unauthorized for url: https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/model_index.json
+GatedRepoError: Cannot access gated repo
+```
+
+**Ursache**: WorldGen verwendet das FLUX.1-dev Modell von Hugging Face, das ein "gated" (zugriffsbeschränktes) Modell ist. Du benötigst:
+1. Einen Hugging Face Account
+2. Akzeptanz der Modell-Nutzungsbedingungen
+3. Ein Hugging Face Access Token
+
+**Lösung**:
+
+1. **Hugging Face Account erstellen** (falls noch nicht vorhanden):
+   - Gehe zu [https://huggingface.co/join](https://huggingface.co/join)
+   - Erstelle einen kostenlosen Account
+
+2. **FLUX.1-dev Modell-Zugriff beantragen**:
+   - Gehe zu [https://huggingface.co/black-forest-labs/FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev)
+   - Klicke auf "Agree and access repository"
+   - Akzeptiere die Nutzungsbedingungen
+
+3. **Access Token erstellen**:
+   - Gehe zu [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+   - Klicke auf "New token"
+   - Wähle "Read" als Token-Typ
+   - Kopiere das generierte Token
+
+4. **Token in Google Colab hinzufügen**:
+   - In Colab: Klicke auf das Schlüssel-Symbol 🔑 in der linken Seitenleiste
+   - Klicke auf "Add new secret"
+   - Name: `HF_TOKEN`
+   - Value: Füge dein Hugging Face Token ein
+   - Aktiviere "Notebook access"
+
+5. **Runtime neu starten**:
+   - `Runtime` → `Restart runtime`
+   - Führe deinen WorldGen-Code erneut aus
+
+**Alternative: Token direkt im Code (nicht empfohlen für öffentliche Notebooks)**:
+```python
+from huggingface_hub import login
+login(token="dein_huggingface_token_hier")
+
+# Dann WorldGen verwenden
+from worldgen import WorldGen
+import torch
+# ... rest des Codes
+```
+
+⚠️ **Wichtig**: Teile dein Token niemals öffentlich! Verwende die Colab Secrets-Funktion für sichere Token-Speicherung.
 
 ### Speicherplatz prüfen
 ```python
